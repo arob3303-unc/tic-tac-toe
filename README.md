@@ -1,5 +1,5 @@
 # Tic Tac Toe tutorial build -> to learn React.js
-## I got bored one night :D
+#### I got bored one night :D
 
 ## Link to the tutorial
 [https://react.dev/learn/tutorial-tic-tac-toe#setup-for-the-tutorial]

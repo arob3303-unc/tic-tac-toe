@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from "react";
 import LoginModal from "./components/LoginModal";
-
-// win variable
-let winNum = 0
+import Leaderboard from "./components/Leaderboard";
 
 // square function -> to create a square
 function Square({value, onSquareClick}) {
@@ -26,7 +24,6 @@ function recordWin(username) {
     })
     .catch(err => console.error(err));
 }
-
 
 // function to find winner
 function calculateWinner(squares) {
@@ -63,9 +60,6 @@ function Board({xIsNext, squares, onPlay, user}) {
 
   if (winner) {
     status = "Winner: " + winner;
-    if (winner === "X") {
-      winNum = 1
-    }
   } else if (int === 9) {
     status = "Start of the game! X is first!";
   } else {
@@ -151,6 +145,7 @@ export default function Game() {
               user={user}
             />
           </div>
+          <Leaderboard />
         </div>
       )}
     </div>

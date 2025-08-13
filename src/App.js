@@ -1,10 +1,32 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import LoginModal from "./components/LoginModal";
- 
+
+// win variable
+let winNum = 0
+
 // square function -> to create a square
 function Square({value, onSquareClick}) {
   return <button className="square" onClick={onSquareClick}>{value}</button>;
 }
+
+// record the win to the sql database via logged in user
+function recordWin(username) {
+  fetch("http://localhost:5000/win", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        console.log("Win recorded!");
+      }
+    })
+    .catch(err => console.error(err));
+}
+
 
 // function to find winner
 function calculateWinner(squares) {
@@ -28,7 +50,7 @@ function calculateWinner(squares) {
 }
 
 // tic tac toe board
-function Board({xIsNext, squares, onPlay}) {
+function Board({xIsNext, squares, onPlay, user}) {
   const winner = calculateWinner(squares);
   let status;
   let int = 0;
@@ -41,6 +63,9 @@ function Board({xIsNext, squares, onPlay}) {
 
   if (winner) {
     status = "Winner: " + winner;
+    if (winner === "X") {
+      winNum = 1
+    }
   } else if (int === 9) {
     status = "Start of the game! X is first!";
   } else {
@@ -94,11 +119,23 @@ export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const currentSquares = history[history.length - 1];
   const [user, setUser] = useState(null);
+  const [winner, setWinner] = useState(null);
 
   function handlePlay(nextSquares) {
     setHistory([...history, nextSquares]);
     setXIsNext(!xIsNext);
+
+    const gameWinner = calculateWinner(nextSquares);
+    if (gameWinner === "X") {
+      setWinner("X");
+    }
   }
+
+  useEffect(() => {
+    if (winner === "X" && user) {
+      recordWin(user);
+    }
+  }, [winner, user]);
 
   return (
     <div>
@@ -106,13 +143,15 @@ export default function Game() {
         <LoginModal onLogin={setUser} />
       ) : (
         <div className="game">
-        <div className="game-board">
-          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
+          <div className="game-board">
+            <Board
+              xIsNext={xIsNext}
+              squares={currentSquares}
+              onPlay={handlePlay}
+              user={user}
+            />
+          </div>
         </div>
-        <div className="game-info">
-          <ol>{/* TODO */ }</ol>
-        </div>
-      </div>
       )}
     </div>
   );

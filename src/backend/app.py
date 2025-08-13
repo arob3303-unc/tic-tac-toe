@@ -69,6 +69,14 @@ def login():
         print("Login error:", e)
         return jsonify({"success": False, "message": "Server error"}), 500
 
+# ---------------- UPDATE WIN --------------------
+@app.route("/win", methods=["POST"])
+def record_win():
+    data = request.get_json()
+    username = data.get("username")
+    cursor.execute("UPDATE users SET wins = wins + 1 WHERE username=%s", (username,))
+    db.commit()
+    return jsonify({"success": True})
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

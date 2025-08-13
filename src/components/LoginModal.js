@@ -13,7 +13,7 @@ export default function LoginModal({ onLogin }) {
             return;
         }
 
-        const url = isCreating ? "https://localhost:5000/register" : "https://localhost:5000/login";
+        const url = isCreating ? "http://localhost:5000/register" : "http://localhost:5000/login";
         const res = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

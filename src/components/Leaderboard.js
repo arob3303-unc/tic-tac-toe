@@ -11,7 +11,7 @@ function Leaderboard() {
   }, []);
 
   return (
-    <div>
+    <div className="leaderboard-component">
       <h2>Leaderboard</h2>
       <table border="1" cellPadding="5">
         <thead>

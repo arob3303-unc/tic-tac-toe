@@ -133,20 +133,24 @@ export default function Game() {
 
   return (
     <div>
-      {!user ? (
+      {user ? (
         <LoginModal onLogin={setUser} />
       ) : (
-        <div className="game">
-          <div className="game-board">
-            <Board
-              xIsNext={xIsNext}
-              squares={currentSquares}
-              onPlay={handlePlay}
-              user={user}
-            />
+        <><div className="title">
+            <h1>Tic-Tac-Toe</h1>
           </div>
-          <Leaderboard />
-        </div>
+          <div className="game">
+              <div className="game-board">
+                <Board
+                  xIsNext={xIsNext}
+                  squares={currentSquares}
+                  onPlay={handlePlay}
+                  user={user} />
+              </div>
+              <div className="leaderboard-chart">
+                <Leaderboard />
+              </div>
+            </div></>
       )}
     </div>
   );

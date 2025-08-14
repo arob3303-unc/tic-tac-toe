@@ -175,7 +175,8 @@ export default function Game() {
 
   return (
     <div>
-      {!user ? (
+      {/* Add "!" in front of user below to enable log in / create account */}
+      {user ? (
         <LoginModal onLogin={setUser} />
       ) : (<>
 

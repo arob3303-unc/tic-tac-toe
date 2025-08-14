@@ -158,7 +158,7 @@ export default function Game() {
       nextSquares[move] = "O";
       handlePlay(nextSquares);
     }
-    }, 500);
+    }, 250);
     return () => clearTimeout(timer);
   }
 // eslint-disable-next-line react-hooks/exhaustive-deps

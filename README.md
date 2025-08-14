@@ -5,7 +5,7 @@
 [https://react.dev/learn/tutorial-tic-tac-toe#setup-for-the-tutorial]
 
 
-IMPORTANT -> My SQL server is being run locally, so the log in will not work for other users. I will SOON put it on AWS.
+IMPORTANT -> My SQL server is being run locally, so the log in will not work for other users. I will SOON put it on AWS. So for now, I am disabling log in feature so people can play tictactoe!
 
 
 ### `GOAL`

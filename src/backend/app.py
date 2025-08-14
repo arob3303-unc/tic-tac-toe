@@ -13,7 +13,7 @@ db = mysql.connector.connect(
     password="thekey",
     database="tictactoe"
 )
-cursor = db.cursor(buffered=True)
+cursor = db.cursor()
 
 # ------------------ REGISTER ------------------
 @app.route("/register", methods=["POST"])
@@ -74,19 +74,23 @@ def login():
 def record_win():
     data = request.get_json()
     username = data.get("username")
-    cursor.execute("UPDATE users SET wins = wins + 1 WHERE username=%s", (username,))
-    db.commit()
+
+    with db.cursor() as cursor:
+        cursor.execute("UPDATE users SET wins = wins + 1 WHERE username=%s", (username,))
+        db.commit()
     return jsonify({"success": True})
 
 # ----------- GET LEADERBOARD INFO ----------------------
 @app.route("/leaderboard", methods=["GET"])
 def leaderboard():
-    cursor.execute("SELECT username, wins FROM users ORDER BY wins DESC")
-    results = cursor.fetchall()
 
-    leaderboard = [
-        {"username": row[0], "wins": row[1]} for row in results
-    ]
+    with db.cursor() as cursor:
+        cursor.execute("SELECT username, wins FROM users ORDER BY wins DESC")
+        results = cursor.fetchall()
+        leaderboard = [
+            {"username": row[0], "wins": row[1]} for row in results
+        ]
+        
     return jsonify(leaderboard)
 
 if __name__ == "__main__":

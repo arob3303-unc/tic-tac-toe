@@ -71,15 +71,15 @@ ul {
   background: #ffd591;
   border: 1px solid #999;
   float: left;
-  font-size: 24px;
+  font-size: 36px;
   font-weight: bold;
   line-height: 34px;
-  height: 64px;
+  height: 76px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 64px;
+  width: 76px;
 }
 
 .board-row:after {
@@ -152,7 +152,7 @@ thead {
 }
 
 th, td {
-  padding: 12px;
+  padding: 20px;
   text-align: center;
 }
 

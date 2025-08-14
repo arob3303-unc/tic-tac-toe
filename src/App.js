@@ -70,12 +70,12 @@ function Board({xIsNext, squares, onPlay, user}) {
 
   if (winner) {
     if (winner === "X") {
-      status = "Great job " + user.toUpperCase() + ", you won!";
+      status = "Great job " + user + ", you won!";
     } else {
       status = "Unfortunate, the AI beat you!" 
     }
   } else if (int === 9) {
-    status = user.toUpperCase() + " is first!";
+    status = user + " is first!";
   } else {
     status = "Good luck!"
   }

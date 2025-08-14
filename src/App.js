@@ -8,7 +8,7 @@ function Square({value, onSquareClick}) {
 }
 
 // record the win to the sql database via logged in user
-function recordWin(username) {
+function recordWin(username = "O") {
   fetch("http://localhost:5000/win", {
     method: "POST",
     headers: {
@@ -46,6 +46,16 @@ function calculateWinner(squares) {
   return null;
 }
 
+// random number generator for "O" to go into a random spot on the board
+function oRandom(squares) {
+  const emptySquares = squares
+    .map((val, idx) => (val === null ? idx : null))
+    .filter(v => v !== null);
+  if (emptySquares.length === 0) return null;
+  const randIndex = Math.floor(Math.random() * emptySquares.length);
+  return emptySquares[randIndex];
+}
+
 // tic tac toe board
 function Board({xIsNext, squares, onPlay, user}) {
   const winner = calculateWinner(squares);
@@ -59,11 +69,15 @@ function Board({xIsNext, squares, onPlay, user}) {
   }
 
   if (winner) {
-    status = "Winner: " + winner;
+    if (winner === "X") {
+      status = "Great job " + user.toUpperCase() + ", you won!";
+    } else {
+      status = "Unfortunate, the AI beat you!" 
+    }
   } else if (int === 9) {
-    status = "Start of the game! X is first!";
+    status = user.toUpperCase() + " is first!";
   } else {
-    status = "Next Player: " + (xIsNext ? "X" : "O");
+    status = "Good luck!"
   }
 
   function handleClick(i) {
@@ -114,44 +128,89 @@ export default function Game() {
   const currentSquares = history[history.length - 1];
   const [user, setUser] = useState(null);
   const [winner, setWinner] = useState(null);
+  const [refreshLeaderboard, setRefreshLeaderboard] = useState(false)
+
+  // restart function
+  function restartGame() {
+    setHistory([Array(9).fill(null)]); // clear board
+    setXIsNext(true);                  // X starts
+    setWinner(null);                   // no winner
+    setRefreshLeaderboard(prev => !prev); // refresh leaderboard
+  }
 
   function handlePlay(nextSquares) {
     setHistory([...history, nextSquares]);
     setXIsNext(!xIsNext);
 
     const gameWinner = calculateWinner(nextSquares);
-    if (gameWinner === "X") {
-      setWinner("X");
+    if (gameWinner) {
+      setWinner(gameWinner);
     }
   }
 
   useEffect(() => {
+  if (!xIsNext && !winner) {
+    const timer = setTimeout(() => {
+    // O's turn
+    const move = oRandom(currentSquares);
+    if (move !== null) {
+      const nextSquares = currentSquares.slice();
+      nextSquares[move] = "O";
+      handlePlay(nextSquares);
+    }
+    }, 500);
+    return () => clearTimeout(timer);
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [xIsNext, winner, currentSquares]);
+
+
+  useEffect(() => {
     if (winner === "X" && user) {
       recordWin(user);
+    } else if (winner === "O" && user) {
+      recordWin("AI / Computer")
     }
   }, [winner, user]);
 
   return (
     <div>
-      {user ? (
+      {!user ? (
         <LoginModal onLogin={setUser} />
-      ) : (
-        <><div className="title">
-            <h1>Tic-Tac-Toe</h1>
+      ) : (<>
+
+      {              /* Website front-end layout / text */            }
+
+      <div className="main-content">
+        <div className="title">
+          <h1>Tic-Tac-Toe</h1>
+        <div className="game">
+          <div className="restart-container">
+            <button onClick={restartGame} className="restart-btn">
+              Restart
+            </button>
+            <button onClick={() => setUser(null)} className="restart-btn">
+              Log-Out
+            </button>
           </div>
-          <div className="game">
-              <div className="game-board">
-                <Board
-                  xIsNext={xIsNext}
-                  squares={currentSquares}
-                  onPlay={handlePlay}
-                  user={user} />
-              </div>
-              <div className="leaderboard-chart">
-                <Leaderboard />
-              </div>
-            </div></>
-      )}
+          <div className="game-board">
+            <Board
+              xIsNext={xIsNext}
+              squares={currentSquares}
+              onPlay={handlePlay}
+              user={user} 
+            />
+          </div>
+          <div className="leaderboard-container">
+            <Leaderboard refresh={refreshLeaderboard}/>
+          </div>
+        </div>
+       </div>
+      </div>
+
+
+
+            </>)}
     </div>
   );
 }

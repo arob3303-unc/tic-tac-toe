@@ -2,11 +2,27 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: sans-serif;
-  margin: 20px;
+html, body {
+  font-family: 'Times New Roman';
+  margin: 0;
   padding: 0;
-  background-color: #fff7e6;
+  height: 100%;
+  background-color: #ffd591;
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  background-color: white;
+  width: 100%;
+  max-width: 600px;
+  min-height: 100vh;        
+  padding: 225px;
+  padding-top: 75px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1 {
@@ -51,12 +67,6 @@ ul {
   box-sizing: border-box;
 }
 
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
-}
-
 .square {
   background: #ffd591;
   border: 1px solid #999;
@@ -83,11 +93,7 @@ body {
 }
 
 .title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: .2rem;
+  text-align: center;
 }
 
 .title h1 {
@@ -97,29 +103,113 @@ body {
 
 .game {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto 0;
-  width: 100%;
+  flex-direction: column;
+  gap: 16px;
+  /* width: min(92vw, 360px); */
+  margin: 0 auto;
 }
 
 .game-board {
-  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* Centers board and status horizontally */
+}
+
+.status {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* leaderboard css */
+.leaderboard-container {
+  display: flex;
+  margin: 25px auto;
+  background: #fff7e6; 
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.leaderboard-container h2 {
+  background: #fa8c16; /* orange-6 */
   color: #612500;
-  font-size: 1.5rem;
-}
-.leaderboard-chart {
-  margin: auto;
-}
-
-.game-info {
-  margin-left: 20px;
+  text-align: center;
+  padding: 20px 0;
+  margin: -10px;
+  font-size: 1.75rem;
 }
 
-.leaderboard-component {
-  justify-content: center;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.leaderboard-component h2 {
+thead {
+  background: #ffc069; /* orange-3 */
   color: #612500;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+}
+
+tbody tr:nth-child(odd) {
+  background: #ffe7ba; /* orange-2 */
+}
+
+tbody tr:nth-child(even) {
+  background: #ffd591; /* orange-4 */
+}
+
+tbody tr:hover {
+  background: #fa8c16; /* orange-6 */
+  color: white;
+  transition: 0.2s ease-in-out;
+}
+
+td:first-child {
+  font-weight: bold;
+  color: #612500; /* orange-7 */
+}
+
+table th {
+  font-weight: 600;
+}
+
+/* Center the leaderboard title */
+.leaderboard-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Optional: center the leaderboard table itself */
+.leaderboard-chart table {
+  margin: 0 auto;
+}
+
+.restart-btn {
+  width: 100%;
+  padding: 4px 8px;
+  background-color: #ffd591;
+  color: #ad4e00;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 15px;
+  margin: 10px;
+}
+
+.restart-btn:hover {
+  background-color: #fa8c16;
+  color: white;
+}
+
+.restart-container {
+  display: flex;
 }

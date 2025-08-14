@@ -13,7 +13,7 @@ db = mysql.connector.connect(
     password="thekey",
     database="tictactoe"
 )
-cursor = db.cursor()
+cursor = db.cursor(buffered=True)
 
 # ------------------ REGISTER ------------------
 @app.route("/register", methods=["POST"])
